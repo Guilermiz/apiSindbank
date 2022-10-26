@@ -32,6 +32,12 @@
       <input type="number" id="celular" name="celular" placeholder="DDD + Telefone" maxlength="11">
       <br>
 
+      <label for="ciclo">Ciclo de Vencimento:</label>
+      <select id="ciclo" name="ciclo">
+        <option value="">Selecione:</option>
+      </select>
+      <br>
+
       <label for="estadoCivil">Estado Civil:</label>
       <select id="estadoCivil" name="estadoCivil">
         <option value="teste">Selecione:</option>
@@ -118,6 +124,7 @@
   createSelects('estadoCivil', "estadoCivil");
   createSelects('profissao', "profissao");
   createSelects('escolaridade', "escolaridade");
+  createSelects('ciclo', "ciclo");
 
   async function requestsGet(req){
     // e.preventDefault();
@@ -132,13 +139,16 @@
           url = "http://motor.stratusti.com.br/apiCadastro.php?sindbank&action=getUFs";
           break;
         case 'estadoCivil':
-          url = "http://motor.stratusti.com.br/apiCadastro.php?sindbank&action=getEstadoCivil";
+          url = "http://motor.stratusti.com.br/apiCadastro.php?action=getEstadoCivil";
           break;
         case 'profissao':
-          url = "http://motor.stratusti.com.br/apiCadastro.php?sindbank&action=getProfissoes";
+          url = "http://motor.stratusti.com.br/apiCadastro.php?action=getProfissoes";
           break;
         case 'escolaridade':
-          url = "http://motor.stratusti.com.br/apiCadastro.php?sindbank&action=getEscolaridades";
+          url = "http://motor.stratusti.com.br/apiCadastro.php?action=getEscolaridades";
+          break;
+        case 'ciclo':
+          url = "http://motor.stratusti.com.br/apiCadastro.php?action=getCiclos";
           break;
       }
 
@@ -166,6 +176,7 @@
       nascimento: document.getElementById('dataNascimento').value,
       email: document.getElementById('email').value,
       celular: document.getElementById('celular').value,
+      ciclo: document.getElementById('ciclo').value,
       estadoCivil: document.getElementById('estadoCivil').value,
       rg: document.getElementById('rg').value,
       orgaoEmissor: document.getElementById('orgaoEmissor').value.toUpperCase(),
@@ -214,35 +225,40 @@
 
     for (const [key, value] of Object.entries(resultRequest)) {
 
-      var opt = document.createElement("option");
+      if (key != "message"){
 
-      Object.keys(value).forEach((item => {
-        // console.log(item + " = " + value[item])
-        switch (item) {
-          case "sigla":
-            opt.value = value[item];
-            break;
-          case "estado":
-            opt.innerHTML = value[item];
-            break;
-          case "idEstadoCivil":
-            opt.value = value[item];
-            break;
-          case "idProfissao":
-            opt.value = value[item];
-            break;
-          case "idEscolaridade":
-            opt.value = value[item];
-            break;
-          case "descricao":
-            opt.innerHTML = value[item];
-            break;
-        }
-        select.appendChild(opt);
-      }))
+        var opt = document.createElement("option");
 
+        Object.keys(value).forEach((item => {
+          // console.log(item + " = " + value[item])
+          switch (item) {
+            case "sigla":
+              opt.value = value[item];
+              break;
+            case "estado":
+              opt.innerHTML = value[item];
+              break;
+            case "idEstadoCivil":
+              opt.value = value[item];
+              break;
+            case "idProfissao":
+              opt.value = value[item];
+              break;
+            case "idEscolaridade":
+              opt.value = value[item];
+              break;
+            case "idCiclo":
+              opt.value = value[item];
+              break;
+            case "descricao":
+              opt.innerHTML = value[item];
+              break;
+          }
+          select.appendChild(opt);
+        }))
+
+      }
     }
-
   }
 
 
